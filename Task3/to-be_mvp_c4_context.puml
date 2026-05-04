@@ -1,5 +1,5 @@
-@startuml C4-Container-Deposits-MVP
-title Открытие депозитов (MVP) Container Diagram
+@startuml C4-Context-Deposits-MVP
+title Открытие депозитов (MVP) Context Diagram
 top to bottom direction
 
 !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
