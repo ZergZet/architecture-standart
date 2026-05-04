@@ -32,8 +32,9 @@
 | | | |
 
 ### <a name="_qmphm5d6rvi3"></a>**Решение**
-[диаграмма контейнеров](https://github.com/ZergZet/architecture-standart/blob/development/Task3/to-be_mvp_c4_container.puml)
-[диаграмма контекста](https://github.com/ZergZet/architecture-standart/blob/development/Task3/to-be_mvp_c4_context.puml)
+
+[Диаграмма контекста](https://github.com/ZergZet/architecture-standart/blob/development/Task3/to-be_mvp_c4_context.puml)  <br>
+[Диаграмма контейнеров](https://github.com/ZergZet/architecture-standart/blob/development/Task3/to-be_mvp_c4_container.puml) <br>
 
 Поскольку достаточно большая команда интернет-банка поддерживает устаревшую технологию .NET, то для новых функциональные возможности целесообразно использовать NetCorе, совместимый на уровне языка программирования.
 Для постепенного перехода необходимо разработать Api-Gateway сервис, который будет перенаправлять новые возможности в новый микросервис открытия депозитов, прежние функциональные возможности же остануться на первом этапе цифровой трансформации в исходной части интернет банка.
