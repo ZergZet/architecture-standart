@@ -26,10 +26,10 @@ Boundary(StandartSystem, "Банк Стандарт"){
     Rel(CallCenterEmployee, CallCenterSystem, "Регистрация заявки на расчёт ставки депозита")
     Rel(CallCenterEmployeeExternal, CallCenterSystemExternal, "Регистрация заявки на расчёт ставки депозита")
 
-     Boundary(ABSSystem, "АБС"){ 
+    Boundary(ABSSystem, "АБС"){ 
         Container(SMSService, "Сервис оповещения клиентов банка", ".NET", "Реализует СМС оповещение")
         ContainerQueue(MessageQueue, "Очередь сообщений", "Message Queue", "Шина событий и заявок для асинхронной коммуникации")
-    
+       
         Container(ABS, "АБС", "Delphi", "Фиксация заявок и условий депозитов")
         ContainerDb(ABSDB, "АБС Database", "Oracle", "Хранение данных по депозитам и клиентам")
         Rel(ABS, ABSDB, "Чтение / запись")
@@ -46,17 +46,26 @@ Boundary(StandartSystem, "Банк Стандарт"){
         Rel(AuthService, SMSGate, "Подтвержение входа по SMS", "") 
                 
         Container(IBankBackEnd, "Интернет-банк", ".NET Framework", "Передаёт заявки в Backend депозитов")
+        Container(IBankQueueService, "Сервис взаимодейтсвия с асинхронной очередью", "DOTNET Core", "Передаёт сообщения из асинхронной очереди")
+        Rel(IBankBackEnd, IBankQueueService, "Передаёт и принимает сообщения","HTTPS")
+        Rel(IBankQueueService, MessageQueue, "Передача сообщений")
 
         ContainerDb(IBankBackDB, "СУБД Интернет-банка", "MS SQL", "Хранит данные интернет банка")
         Rel(IBankBackEnd, IBankBackDB, "Чтение/запись", "MS SQL") 
 
-        Container(DepositeService, "Сервис открытия допозитов (MVP)", ".NET", "Принимает заявки на депозит, отслеживает процесс согласования открытия депозитов")
+        Container(DepositeService, "Сервис открытия депозитов (MVP)", ".NET", "Принимает заявки на депозит, отслеживает процесс согласования открытия депозитов")
+        Container(CallCenterService, "Сервис передачи данных в Call-центр (MVP)", ".NET", "Передаёт разрешённую информацию специалистам кол-центра")
     }
 }
 
 Rel(IBankUI, APIGW,  "Управление интернет банком","HTTPS")
 Rel(APIGW, IBankBackEnd, "Управление интернет банком","HTTPS")
 Rel(APIGW, DepositeService, "Управление заявками на депозит","HTTPS")
+
+Rel(APIGW, CallCenterService, "Запрос данных для кол-центра","HTTPS")
+Rel(CallCenterService, MessageQueue, "Запрос данных для кол-центра","HTTPS")
+Rel(MessageQueue,CallCenterService,  "","")
+Rel(CallCenterSystem, CallCenterSystemExternal, "Загрузка файла с новыми ставками банка при их изменении", "sftp")
 
 Rel(DepositeManager, ABS, "Взаимодействие с АБС")
 Rel(ABS,DepositeManager,  "")
@@ -67,7 +76,7 @@ Rel(ABS, FrontOficceManager, "")
 
 Rel(Client, WebSite, "Регистируется, подаёт заявку на депозит")
 Rel(WebSite, CallCenterSystem, "Регистирует заявку на депозит")
-Rel(CallCenterSystem, APIGW, "Заявки на депозит")
+Rel(CallCenterSystem, APIGW, "Заявки на депозит, получение ставок")
 
 Rel(Client, IBankUI, "Подаёт заявку")
 

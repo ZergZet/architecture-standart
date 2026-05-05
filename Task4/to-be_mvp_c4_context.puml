@@ -43,7 +43,11 @@ Rel(ABSSystem, FrontOficceManager, "")
 
 Rel(Client, WebSite, "Регистируется, подаёт заявку на депозит")
 Rel(WebSite, CallCenterSystem, "Регистирует заявку на депозит")
-Rel(CallCenterSystem, InternetBankSystem, "Заявки на депозит")
+Rel(CallCenterSystem, InternetBankSystem, "Заявки на депозит, получение ставок")
+
+
+Rel(InternetBankSystem, CallCenterSystem, "Получение ставок банка")
+Rel(CallCenterEmployee, CallCenterSystemExternal, "Загрузка файла с новыми ставками банка при их изменении", "sftp")
 
 Rel(InternetBankSystem, SMSGate, "Отправка SMS")
 Rel(ABSSystem, SMSGate, "Отправка SMS")
